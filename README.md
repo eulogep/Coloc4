@@ -124,6 +124,7 @@ Seules deux variables publiques sont nécessaires (`NEXT_PUBLIC_SUPABASE_URL` et
 - 🎨 [Identité visuelle](docs/identite-visuelle.md) : logo, couleurs, composants
 - ✅ [Preuves de test](docs/m1-test-evidence.md) : ce qui est testé, comment, et ce que l'automatisation ne couvre pas
 - 🚀 [Mise en production et essai à 4](docs/deployment.md)
+- 🧭 [Où on en est et ce qui reste à faire](docs/etat-davancement.md)
 
 ## Ce que Coloc4 n'est pas
 
