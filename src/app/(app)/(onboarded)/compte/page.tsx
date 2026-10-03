@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ChevronRight, House, LogOut, Pencil, Plus, ShieldCheck } from "lucide-react";
+import { BookOpen, ChevronRight, House, LogOut, Pencil, Plus, ShieldCheck } from "lucide-react";
 import { fr } from "@/i18n/fr";
 import { Avatar } from "@/components/ui/avatar";
 import { Page, PageTitle, SectionTitle } from "@/components/ui/page";
@@ -50,6 +50,12 @@ export default async function AccountPage() {
           <Link href="/profil" className={rowClass}>
             <Pencil aria-hidden="true" className="size-5 text-muted" />
             <span className="flex-1">{fr.account.editName}</span>
+          </Link>
+        </li>
+        <li>
+          <Link href="/guide" className={rowClass}>
+            <BookOpen aria-hidden="true" className="size-5 text-brand" />
+            <span className="flex-1">{fr.guide.link}</span>
           </Link>
         </li>
         <li>

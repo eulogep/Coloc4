@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, Plus, ReceiptText } from "lucide-react";
+import { BookOpen, ChevronRight, Plus, ReceiptText } from "lucide-react";
 import { fr } from "@/i18n/fr";
 import { Avatar } from "@/components/ui/avatar";
 import { buttonClass } from "@/components/ui/button";
@@ -28,11 +28,17 @@ export default async function ExpensesPage({ params }: PageProps<"/colocations/[
       </Link>
 
       {expenses.length === 0 ? (
-        <EmptyState
-          icon={<ReceiptText className="size-8" />}
-          title={fr.expenses.emptyTitle}
-          hint={fr.expenses.emptyHint}
-        />
+        <>
+          <EmptyState
+            icon={<ReceiptText className="size-8" />}
+            title={fr.expenses.emptyTitle}
+            hint={fr.expenses.emptyHint}
+          />
+          <Link href="/guide" className={buttonClass("ghost", "self-center")}>
+            <BookOpen aria-hidden="true" className="size-5" />
+            {fr.guide.linkHome}
+          </Link>
+        </>
       ) : (
         <ul className="flex flex-col gap-3">
           {expenses.map((e) => {

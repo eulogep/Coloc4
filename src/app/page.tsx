@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, HandCoins, ReceiptText, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, HandCoins, ReceiptText, Sparkles } from "lucide-react";
 import { fr } from "@/i18n/fr";
 import { Avatar } from "@/components/ui/avatar";
 import { buttonClass } from "@/components/ui/button";
@@ -50,6 +50,10 @@ export default async function Home({ searchParams }: PageProps<"/">) {
         </Link>
         <Link href="/connexion" className={buttonClass("secondary", "w-full")}>
           {fr.home.signIn}
+        </Link>
+        <Link href="/guide" className={buttonClass("ghost", "w-full")}>
+          <BookOpen aria-hidden="true" className="size-5" />
+          {fr.guide.linkHome}
         </Link>
       </div>
 

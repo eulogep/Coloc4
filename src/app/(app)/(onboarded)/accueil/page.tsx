@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ChevronRight, House, Plus, UserRound } from "lucide-react";
+import { BookOpen, ChevronRight, House, Plus, UserRound } from "lucide-react";
 import { fr } from "@/i18n/fr";
 import { buttonClass } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -48,6 +48,10 @@ export default async function AppHomePage() {
       <Link href="/compte" className={buttonClass("secondary")}>
         <UserRound aria-hidden="true" className="size-5" />
         {fr.account.link}
+      </Link>
+      <Link href="/guide" className={buttonClass("ghost")}>
+        <BookOpen aria-hidden="true" className="size-5" />
+        {fr.guide.linkHome}
       </Link>
     </Page>
   );
