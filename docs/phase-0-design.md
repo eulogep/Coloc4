@@ -985,7 +985,7 @@ STATUS           NOT_STARTED
 | OD-03 | DB-side join rate limit + `RATE_LIMITED` code (PC-5) | 20 / 10 min / user | Security design |
 | OD-04 | Settlements between two former members (PC-10) | Not supported in M1 | Money semantics |
 | OD-05 | Max amount 1 000 000,00 € (PC-11) | Yes | Money semantics |
-| OD-06 | TypeScript 7 vs 6 | Try 7, fallback 6.0.3 | Tooling |
+| OD-06 | TypeScript 7 vs 6 | **RESOLVED in T-0001: 6.0.3.** `typescript-eslint` 8.71.0 (via eslint-config-next 16.3.8) throws "does not support TS 7.0". | Tooling |
 | OD-07 | Who may create/revoke invitations (A-01) | Any active member | Product/security |
 | OD-08 | Token in the URL fragment | Yes | Security |
 | OD-09 | Legal retention basis for anonymized financial history | Must be reviewed before production. No compliance claimed. | Legal |

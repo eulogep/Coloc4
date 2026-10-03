@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Typecheck, lint, unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+
+  database-and-e2e:
+    name: Database tests, build, E2E
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Start local Supabase
+        run: npx supabase start --exclude studio,imgproxy,edge-runtime,logflare,vector,supavisor
+      - name: Database tests (pgTAP, incl. RLS-enabled check)
+        run: npm run db:test
+      - name: Write public env for the app
+        run: |
+          npx supabase status -o env \
+            | sed -n -e 's/^API_URL=/NEXT_PUBLIC_SUPABASE_URL=/p' \
+                     -e 's/^PUBLISHABLE_KEY=/NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=/p' \
+            | tr -d '"' > .env.local
+          grep -q '^NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_' .env.local
+      - run: npx playwright install --with-deps chromium
+      - name: Build + E2E
+        run: npm run test:e2e
