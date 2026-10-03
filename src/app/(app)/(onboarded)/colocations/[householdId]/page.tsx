@@ -1,11 +1,14 @@
 import { notFound } from "next/navigation";
 import { fr } from "@/i18n/fr";
 import { getHousehold } from "@/modules/households/queries";
+import { InvitePanel } from "@/modules/invitations/invite-panel";
+import { listActiveInvitations } from "@/modules/invitations/queries";
 
 export default async function HouseholdPage({ params }: PageProps<"/colocations/[householdId]">) {
   const { householdId } = await params;
   const household = await getHousehold(householdId);
   if (!household) notFound();
+  const invitations = await listActiveInvitations(household.id);
 
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-6 px-4 py-10">
@@ -25,6 +28,12 @@ export default async function HouseholdPage({ params }: PageProps<"/colocations/
           ))}
         </ul>
       </section>
+      <InvitePanel
+        householdId={household.id}
+        householdName={household.name}
+        timezone={household.timezone}
+        invitations={invitations}
+      />
     </main>
   );
 }

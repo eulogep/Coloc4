@@ -10,12 +10,13 @@ import { DISPLAY_NAME_MAX_LENGTH } from './display-name'
 
 const initialState: ProfileFormState = { error: null }
 
-export function ProfileForm({ initialDisplayName }: { initialDisplayName: string }) {
+export function ProfileForm({ initialDisplayName, next }: { initialDisplayName: string; next?: string }) {
   const [state, formAction, pending] = useActionState(saveProfile, initialState)
   const [displayName, setDisplayName] = useState(initialDisplayName)
 
   return (
     <form action={formAction} className="flex w-full max-w-sm flex-col gap-4">
+      {next && <input type="hidden" name="next" value={next} />}
       <TextField
         id="displayName"
         name="displayName"

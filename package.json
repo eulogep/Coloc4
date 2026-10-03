@@ -15,7 +15,8 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
-    "db:types": "supabase gen types typescript --local --schema public > src/lib/supabase/database.types.ts"
+    "db:types": "supabase gen types typescript --local --schema public > src/lib/supabase/database.types.ts",
+    "test:integration": "vitest run --config vitest.integration.config.mts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
@@ -30,11 +31,13 @@
     "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24.19.1",
+    "@types/pg": "8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "fast-check": "4.10.2",
+    "pg": "8.23.1",
     "supabase": "2.119.0",
     "tailwindcss": "^4",
     "typescript": "6.0.3",

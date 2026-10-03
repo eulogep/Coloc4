@@ -37,6 +37,8 @@ jobs:
         run: npx supabase start --exclude studio,imgproxy,edge-runtime,logflare,vector,supavisor
       - name: Database tests (pgTAP, incl. RLS-enabled check)
         run: npm run db:test
+      - name: Integration tests (concurrency against local Postgres)
+        run: npm run test:integration
       - name: Generated DB types are up to date
         run: |
           npm run db:types

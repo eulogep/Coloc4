@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
-const uniqueEmail = () => `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@test.local`
-const password = 'motdepasse123'
+import { PASSWORD, uniqueEmail } from './support/flows'
+const password = PASSWORD
 
 test('sign up, choose a display name, sign out, sign back in', async ({ page }) => {
   const email = uniqueEmail()
