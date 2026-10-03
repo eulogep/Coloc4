@@ -988,8 +988,8 @@ STATUS           NOT_STARTED
 | OD-06 | TypeScript 7 vs 6 | **RESOLVED in T-0001: 6.0.3.** `typescript-eslint` 8.71.0 (via eslint-config-next 16.3.8) throws "does not support TS 7.0". | Tooling |
 | OD-07 | Who may create/revoke invitations (A-01) | Any active member | Product/security |
 | OD-08 | Token in the URL fragment | Yes | Security |
-| OD-09 | Legal retention basis for anonymized financial history | Must be reviewed before production. No compliance claimed. | Legal |
-| OD-10 | Auth method (magic link vs password vs both) | Email + password, plus magic link if trivial | Auth architecture |
+| OD-09 | Legal retention basis for anonymized financial history | **DECIDED by the human (2026-10-03):** keep anonymized amounts so other members' balances stay correct; disclosed to testers on `/donnees`. No compliance claimed. | Legal |
+| OD-10 | Auth method (magic link vs password vs both) | **DECIDED:** email + password, email confirmation in production, password reset by email (T-0015). Emails via Brevo SMTP (human chose the sender; provider chosen for EU base, free tier, works without a domain). | Auth architecture |
 | OD-11 | Show the household name before "Rejoindre" (A-04) | Show it, via a read-only `preview_invitation(token)` RPC returning only the name and a validity code (the prompt §7.4 asks for it) | Privacy (anyone holding the link learns the name) |
 | OD-12 | Git hosting / CI provider | GitHub + Actions | Outward-facing |
 | A-02 | Any active member may soft-delete any expense | Yes, with an activity log entry | Product |
