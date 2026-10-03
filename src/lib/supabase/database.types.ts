@@ -290,7 +290,10 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "create_expense":
+            "archive_household":
+{ Args: { "p_household_id": string }; Returns: undefined
+                           },
+"create_expense":
 { Args: { "p_amount_minor": string,"p_household_id": string,"p_paid_by_member_id": string,"p_participants": Json,"p_spent_on": string,"p_split_mode": Database["public"]['Enums']["split_mode"],"p_title": string }; Returns: string
                            },
 "create_household":
@@ -304,6 +307,9 @@ isOneToOne: false
 "delete_expense":
 { Args: { "p_expense_id": string }; Returns: undefined
                            },
+"delete_my_account":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
 "delete_settlement":
 { Args: { "p_settlement_id": string }; Returns: undefined
                            },
@@ -311,6 +317,9 @@ isOneToOne: false
 { Args: { "p_token": string }; Returns: {
               "result_code": string,"target_household_id": string
             }[]
+                           },
+"leave_household":
+{ Args: { "p_household_id": string }; Returns: undefined
                            },
 "preview_invitation":
 { Args: { "p_token": string }; Returns: {
@@ -324,6 +333,9 @@ isOneToOne: false
                            },
 "revoke_invitation":
 { Args: { "p_invitation_id": string }; Returns: undefined
+                           },
+"transfer_ownership":
+{ Args: { "p_household_id": string,"p_to_member_id": string }; Returns: undefined
                            },
 "update_expense":
 { Args: { "p_amount_minor": string,"p_expense_id": string,"p_paid_by_member_id": string,"p_participants": Json,"p_spent_on": string,"p_split_mode": Database["public"]['Enums']["split_mode"],"p_title": string }; Returns: undefined

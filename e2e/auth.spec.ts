@@ -19,6 +19,7 @@ test('sign up, choose a display name, sign out, sign back in', async ({ page }) 
   await expect(page).toHaveURL(/\/accueil$/)
   await expect(page.getByRole('heading', { name: 'Bonjour Emma !' })).toBeVisible()
 
+  await page.getByRole('link', { name: 'Mon compte' }).click()
   await page.getByRole('button', { name: 'Se déconnecter' }).click()
   await expect(page).toHaveURL(/\/connexion$/)
 

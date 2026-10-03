@@ -66,4 +66,42 @@ describe('money RPCs commit as authenticated', () => {
     )
     await expect(admin.query('commit')).rejects.toThrow(/EXPENSE_SHARES_MISMATCH/)
   })
+
+  it('delete_my_account commits as the authenticated user and keeps the books', async () => {
+    const alice = await createUserWithProfile(admin, 'Alice')
+    const bob = await createUserWithProfile(admin, 'Bob')
+    const householdId = await createHouseholdAs(admin, alice)
+    await beginAs(client, alice)
+    const { rows: inv } = await client.query<{ token: string }>('select token from public.create_invitation($1)', [householdId])
+    await client.query('commit')
+    await beginAs(client, bob)
+    await client.query('select * from public.join_household($1)', [inv[0]!.token])
+    await client.query('commit')
+
+    const { rows: members } = await admin.query<{ id: string; user_id: string }>(
+      'select id, user_id::text from public.household_members where household_id = $1',
+      [householdId],
+    )
+    const ids = members.map((m) => m.id)
+    const bobMember = members.find((m) => m.user_id === bob)!.id
+    await beginAs(client, bob)
+    await client.query(
+      `select public.create_expense($1, 'Courses', '3000', $2, 'equal', current_date, $3::jsonb)`,
+      [householdId, bobMember, JSON.stringify(ids)],
+    )
+    await client.query('commit')
+
+    await beginAs(client, bob)
+    await client.query('select public.delete_my_account()')
+    await client.query('commit')
+
+    const { rows } = await admin.query<{ name: string; status: string; net: string; users: string }>(
+      `select m.display_name_snapshot as name, m.status::text, private.member_net(m.household_id, m.id)::text as net,
+              (select count(*)::text from auth.users where id = $2) as users
+       from public.household_members m where m.id = $1`,
+      [bobMember, bob],
+    )
+    expect(rows[0]).toEqual({ name: 'Ancien colocataire 1', status: 'anonymized', net: '1500', users: '0' })
+  })
 })
+

@@ -1,10 +1,16 @@
 import Link from "next/link";
 import { fr } from "@/i18n/fr";
 
-export default function Home() {
+export default async function Home({ searchParams }: PageProps<"/">) {
+  const { compte } = await searchParams;
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-16 text-center">
       <h1 className="text-3xl font-semibold">{fr.appName}</h1>
+      {compte === "supprime" && (
+        <p role="status" className="rounded-lg border border-zinc-500 px-3 py-2">
+          {fr.account.deleted}
+        </p>
+      )}
       <p className="max-w-md text-lg">{fr.tagline}</p>
       <div className="flex w-full max-w-sm flex-col gap-3">
         <Link

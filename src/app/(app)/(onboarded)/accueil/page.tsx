@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { fr } from "@/i18n/fr";
-import { signOut } from "@/modules/auth/actions";
 import { listMyHouseholds } from "@/modules/households/queries";
 import { getMyProfile } from "@/modules/profiles/queries";
 
@@ -44,14 +43,12 @@ export default async function AppHomePage() {
         {fr.households.create}
       </Link>
 
-      <form action={signOut}>
-        <button
-          type="submit"
-          className="min-h-12 w-full rounded-full border border-zinc-400 px-6 font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
-        >
-          {fr.auth.signOut}
-        </button>
-      </form>
+      <Link
+        href="/compte"
+        className="flex min-h-12 items-center justify-center rounded-full border border-zinc-400 px-6 font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        {fr.account.link}
+      </Link>
     </main>
   );
 }
