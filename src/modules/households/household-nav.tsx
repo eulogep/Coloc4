@@ -10,6 +10,7 @@ export function HouseholdNav({ householdId }: { householdId: string }) {
   const base = `/colocations/${householdId}`
   const items = [
     { href: `${base}/depenses`, label: fr.nav.expenses },
+    { href: `${base}/soldes`, label: fr.nav.balances },
     { href: `${base}/membres`, label: fr.nav.household },
   ]
 
