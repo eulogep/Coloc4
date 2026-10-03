@@ -11,7 +11,7 @@ export function ForgotPasswordForm() {
   const [state, formAction, pending] = useActionState(requestPasswordReset, { error: null, sent: false } as ResetState)
   const [email, setEmail] = useState('')
   return (
-    <form action={formAction} className="flex w-full max-w-sm flex-col gap-4">
+    <form action={formAction} className="flex w-full flex-col gap-4">
       <TextField
         id="email"
         name="email"
@@ -32,7 +32,7 @@ export function NewPasswordForm() {
   const [state, formAction, pending] = useActionState(updatePassword, { error: null, info: null } as AuthFormState)
   const [password, setPassword] = useState('')
   return (
-    <form action={formAction} className="flex w-full max-w-sm flex-col gap-4">
+    <form action={formAction} className="flex w-full flex-col gap-4">
       <TextField
         id="password"
         name="password"

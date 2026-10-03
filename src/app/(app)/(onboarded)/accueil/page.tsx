@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ChevronRight, House, Plus, UserRound } from "lucide-react";
 import { fr } from "@/i18n/fr";
+import { buttonClass } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Logo } from "@/components/ui/logo";
+import { Page, SectionTitle } from "@/components/ui/page";
 import { listMyHouseholds } from "@/modules/households/queries";
 import { getMyProfile } from "@/modules/profiles/queries";
 
@@ -10,25 +15,25 @@ export default async function AppHomePage() {
   if (households.length === 1 && households[0]) redirect(`/colocations/${households[0].id}`);
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-6 px-4 py-10">
-      <h1 className="text-2xl font-semibold">{fr.app.greeting(profile.displayName)}</h1>
+    <Page>
+      <Logo size={32} className="text-xl" />
+      <h1 className="text-3xl font-extrabold tracking-tight">{fr.app.greeting(profile.displayName)}</h1>
 
       {households.length === 0 ? (
-        <section className="flex flex-col gap-2">
-          <h2 className="text-lg font-medium">{fr.households.emptyTitle}</h2>
-          <p>{fr.households.emptyHint}</p>
-        </section>
+        <EmptyState icon={<House className="size-8" />} title={fr.households.emptyTitle} hint={fr.households.emptyHint} />
       ) : (
         <section className="flex flex-col gap-3">
-          <h2 className="text-lg font-medium">{fr.households.listTitle}</h2>
-          <ul className="flex flex-col gap-2">
+          <SectionTitle>{fr.households.listTitle}</SectionTitle>
+          <ul className="flex flex-col gap-3">
             {households.map((h) => (
               <li key={h.id}>
                 <Link
                   href={`/colocations/${h.id}`}
-                  className="flex min-h-12 items-center rounded-lg border border-zinc-400 px-4 font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
+                  className="flex min-h-16 items-center gap-3 rounded-3xl border border-line bg-surface px-4 font-extrabold shadow-sm"
                 >
-                  {h.name}
+                  <House aria-hidden="true" className="size-6 text-brand" />
+                  <span className="flex-1">{h.name}</span>
+                  <ChevronRight aria-hidden="true" className="size-5 text-muted" />
                 </Link>
               </li>
             ))}
@@ -36,19 +41,14 @@ export default async function AppHomePage() {
         </section>
       )}
 
-      <Link
-        href="/colocations/nouvelle"
-        className="flex min-h-12 items-center justify-center rounded-full bg-foreground px-6 font-medium text-background focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
+      <Link href="/colocations/nouvelle" className={buttonClass("primary")}>
+        <Plus aria-hidden="true" className="size-5" strokeWidth={3} />
         {fr.households.create}
       </Link>
-
-      <Link
-        href="/compte"
-        className="flex min-h-12 items-center justify-center rounded-full border border-zinc-400 px-6 font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
+      <Link href="/compte" className={buttonClass("secondary")}>
+        <UserRound aria-hidden="true" className="size-5" />
         {fr.account.link}
       </Link>
-    </main>
+    </Page>
   );
 }

@@ -15,7 +15,7 @@ export function ProfileForm({ initialDisplayName, next }: { initialDisplayName: 
   const [displayName, setDisplayName] = useState(initialDisplayName)
 
   return (
-    <form action={formAction} className="flex w-full max-w-sm flex-col gap-4">
+    <form action={formAction} className="flex w-full flex-col gap-4">
       {next && <input type="hidden" name="next" value={next} />}
       <TextField
         id="displayName"

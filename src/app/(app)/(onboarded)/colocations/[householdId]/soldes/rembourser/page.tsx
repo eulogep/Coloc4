@@ -23,7 +23,7 @@ export default async function RecordSettlementPage({
   const result = await getHouseholdBalances(household.id, household.members.map((m) => m.id));
   if (!result.ok) {
     return (
-      <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 py-6">
+      <main className="flex w-full flex-1 flex-col gap-5 px-4 pt-6 pb-8">
         <p role="alert">{fr.balances.integrityError}</p>
       </main>
     );
@@ -42,9 +42,9 @@ export default async function RecordSettlementPage({
   const other = typeof query.avec === "string" && isUuid(query.avec) ? query.avec : "";
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 py-6">
-      <h1 className="text-2xl font-semibold">{fr.settlements.title}</h1>
-      <p>{fr.settlements.intro}</p>
+    <main className="flex w-full flex-1 flex-col gap-5 px-4 pt-6 pb-8">
+      <h1 className="text-3xl font-extrabold tracking-tight">{fr.settlements.title}</h1>
+      <p className="text-muted">{fr.settlements.intro}</p>
       <SettlementForm
         householdId={household.id}
         myMemberId={household.myMemberId}

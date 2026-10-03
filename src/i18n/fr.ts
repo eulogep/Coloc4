@@ -5,6 +5,26 @@ export const fr = {
   home: {
     signIn: 'Se connecter',
     signUp: 'Créer un compte',
+    headline: 'La maison en commun, les comptes en clair.',
+    features: [
+      {
+        title: 'Qui a payé quoi',
+        body: 'Une dépense en moins de 30 secondes. Coloc4 calcule les parts au centime près.',
+      },
+      {
+        title: 'Qui doit combien, à qui',
+        body: 'Chacun voit son solde en une phrase, et le moins de virements possible pour être quittes.',
+      },
+      {
+        title: 'Sans prise de tête',
+        body: 'Pas de tableur, pas de débat : un clic sur « Pourquoi ? » explique chaque centime.',
+      },
+    ],
+    exampleLabel: 'Exemple',
+    exampleLine: 'Tu dois 12,50 € à Emma',
+    exampleHint: 'Courses, internet, électricité : tout est déjà calculé.',
+    trust: 'Coloc4 ne touche jamais à ton argent : l’appli calcule, vous vous remboursez comme d’habitude.',
+    backHome: 'Accueil Coloc4',
   },
   auth: {
     email: 'Email',
@@ -337,11 +357,14 @@ export const fr = {
     emptyHint: 'Crée la tienne, ou ouvre le lien d’invitation envoyé par un colocataire.',
     create: 'Créer une colocation',
     createTitle: 'Nouvelle colocation',
+    createIntro: 'Tu pourras inviter tes colocataires juste après.',
     name: 'Nom de la colocation',
     nameHint: 'Par exemple : « Coloc des Lilas ».',
     submit: 'Créer',
     pending: 'Création…',
     members: 'Colocataires',
+    activeOne: 'colocataire',
+    activeMany: 'colocataires',
     you: 'toi',
     owner: 'responsable',
     formerMember: 'ancien colocataire',

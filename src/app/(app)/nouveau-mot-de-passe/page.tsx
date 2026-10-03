@@ -1,12 +1,12 @@
 import { fr } from "@/i18n/fr";
+import { AuthShell } from "@/components/ui/auth-shell";
 import { NewPasswordForm } from "@/modules/auth/password-forms";
 
 // Reached from the recovery email: /auth/confirm opened a session first.
 export default function NewPasswordPage() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-12">
-      <h1 className="text-2xl font-semibold">{fr.passwordReset.newTitle}</h1>
+    <AuthShell title={fr.passwordReset.newTitle}>
       <NewPasswordForm />
-    </main>
+    </AuthShell>
   );
 }

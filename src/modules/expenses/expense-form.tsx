@@ -4,7 +4,8 @@ import { useActionState, useState } from 'react'
 import { fr } from '@/i18n/fr'
 import { FormMessage } from '@/components/ui/form-message'
 import { SubmitButton } from '@/components/ui/submit-button'
-import { TextField } from '@/components/ui/text-field'
+import { TextField, fieldClass } from '@/components/ui/text-field'
+import { Avatar } from '@/components/ui/avatar'
 import { saveExpense, type ExpenseFormState } from './actions'
 import { formatEur, parseEurAmount, parseEurShare } from './domain/money'
 import { splitEqual } from './domain/split'
@@ -40,7 +41,7 @@ function EqualPreview({ amount, participants }: { amount: string; participants: 
   const high = values[0]!
   const low = values[values.length - 1]!
   return (
-    <p className="text-sm" aria-live="polite">
+    <p className="self-start rounded-full bg-neutral-tint px-3 py-1 text-sm font-bold" aria-live="polite">
       {high === low
         ? fr.expenses.form.eachEqual(formatEur(high))
         : fr.expenses.form.eachAround(formatEur(low), formatEur(high))}
@@ -59,7 +60,12 @@ function ExactRemaining({ amount, shares }: { amount: string; shares: string[] }
   }
   const remaining = parsed.value - assigned
   return (
-    <p className="font-medium" aria-live="polite">
+    <p
+      className={`self-start rounded-full px-3 py-1 font-bold ${
+        remaining === 0n ? 'bg-positive-tint text-positive' : 'bg-negative-tint text-negative'
+      }`}
+      aria-live="polite"
+    >
       {remaining === 0n
         ? fr.expenses.form.balanced
         : remaining > 0n
@@ -111,10 +117,11 @@ export function ExpenseForm({ householdId, expenseId, myMemberId, members, defau
         required
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
+        large
       />
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor="paidBy" className="font-medium">
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="paidBy" className="font-bold">
           {fr.expenses.form.paidBy}
         </label>
         <select
@@ -122,7 +129,7 @@ export function ExpenseForm({ householdId, expenseId, myMemberId, members, defau
           name="paidBy"
           value={paidBy}
           onChange={(e) => setPaidBy(e.target.value)}
-          className="min-h-12 rounded-lg border border-zinc-400 bg-background px-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2"
+          className={fieldClass}
         >
           {payerOptions.map((m) => (
             <option key={m.id} value={m.id}>
@@ -133,11 +140,14 @@ export function ExpenseForm({ householdId, expenseId, myMemberId, members, defau
       </div>
 
       <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 font-medium">{fr.expenses.form.participants}</legend>
+        <legend className="mb-1 font-bold">{fr.expenses.form.participants}</legend>
         {members.map((m) => {
           const checked = participants.includes(m.id)
           return (
-            <div key={m.id} className="flex min-h-12 items-center gap-3 rounded-lg border border-zinc-300 px-3">
+            <div
+              key={m.id}
+              className="flex min-h-14 items-center gap-3 rounded-2xl border-2 border-line bg-surface px-3 has-[:checked]:border-brand has-[:checked]:bg-brand-tint"
+            >
               <input
                 id={`participant-${m.id}`}
                 type="checkbox"
@@ -145,9 +155,10 @@ export function ExpenseForm({ householdId, expenseId, myMemberId, members, defau
                 value={m.id}
                 checked={checked}
                 onChange={(e) => toggleParticipant(m.id, e.target.checked)}
-                className="size-5"
+                className="size-5 shrink-0"
               />
-              <label htmlFor={`participant-${m.id}`} className="flex-1 py-3">
+              <Avatar id={m.id} name={m.displayName} size="sm" muted={!m.active} />
+              <label htmlFor={`participant-${m.id}`} className="flex-1 cursor-pointer py-3 font-bold">
                 {label(m)}
               </label>
               {splitMode === 'exact' && checked && (
@@ -159,7 +170,7 @@ export function ExpenseForm({ householdId, expenseId, myMemberId, members, defau
                   placeholder="0,00"
                   value={exactShares[m.id] ?? ''}
                   onChange={(e) => setExactShares((s) => ({ ...s, [m.id]: e.target.value }))}
-                  className="min-h-10 w-24 rounded-lg border border-zinc-400 bg-background px-2 text-right focus-visible:outline-2 focus-visible:outline-offset-2"
+                  className="min-h-11 w-24 rounded-xl border-2 border-field bg-surface px-2 text-right font-bold"
                 />
               )}
             </div>
@@ -173,7 +184,7 @@ export function ExpenseForm({ householdId, expenseId, myMemberId, members, defau
         <button
           type="button"
           onClick={() => setSplitMode(splitMode === 'equal' ? 'exact' : 'equal')}
-          className="self-start py-2 text-sm font-medium underline focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="self-start rounded-full py-2 text-sm font-bold text-brand underline underline-offset-4"
         >
           {splitMode === 'equal' ? fr.expenses.form.useExact : fr.expenses.form.useEqual}
         </button>

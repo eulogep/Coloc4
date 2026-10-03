@@ -15,9 +15,9 @@ export default async function EditExpensePage({
   const expense = await getExpense(household.id, expenseId);
   if (!expense || expense.deleted) {
     return (
-      <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 py-6">
+      <main className="flex w-full flex-1 flex-col gap-5 px-4 pt-6 pb-8">
         <p>{fr.expenses.notFound}</p>
-        <Link href={`/colocations/${household.id}/depenses`} className="font-medium underline">
+        <Link href={`/colocations/${household.id}/depenses`} className="font-bold underline underline-offset-4">
           {fr.expenses.back}
         </Link>
       </main>
@@ -32,8 +32,8 @@ export default async function EditExpensePage({
   const participants = expense.shares.filter((s) => s.amountMinor > 0n).map((s) => s.memberId);
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 py-6">
-      <h1 className="text-2xl font-semibold">{fr.expenses.editTitle}</h1>
+    <main className="flex w-full flex-1 flex-col gap-5 px-4 pt-6 pb-8">
+      <h1 className="text-3xl font-extrabold tracking-tight">{fr.expenses.editTitle}</h1>
       <ExpenseForm
         householdId={household.id}
         expenseId={expense.id}

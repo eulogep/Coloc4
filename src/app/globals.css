@@ -1,26 +1,136 @@
 @import "tailwindcss";
 
+/*
+ * Coloc4 — identité « La maison en commun ».
+ * Every text/background pair below is WCAG AA (checked: ≥ 4.5:1 for text,
+ * ≥ 3:1 for field borders). Colour never carries meaning alone: amounts are
+ * always phrased as sentences and paired with an icon.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --canvas: #fbf6ee;          /* crème : fond de page */
+  --backdrop: #f1e7d8;        /* autour du cadre, sur grand écran */
+  --surface: #ffffff;         /* cartes */
+  --surface-muted: #f6efe4;
+  --ink: #1e2430;             /* encre */
+  --muted: #5c6370;
+  --line: #ebe1d3;            /* séparateurs décoratifs */
+  --field: #8c7f6e;           /* bordure des champs (3,6:1) */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --brand: #b8431f;           /* brique */
+  --brand-strong: #9a3412;
+  --on-brand: #ffffff;
+  --brand-tint: #fbe7dd;
+
+  --positive: #1f6b45;        /* « On te doit » */
+  --positive-tint: #e3f1e8;
+  --negative: #9a3412;        /* « Tu dois » */
+  --negative-tint: #fbe7dd;
+  --neutral-tint: #efe9df;
+
+  /* Les quatre carreaux de la fenêtre (logo, pastilles des colocataires). */
+  --pane-brique: #d9572b;
+  --pane-moutarde: #e8a33d;
+  --pane-sauge: #6e9f7b;
+  --pane-ciel: #5b8def;
+  --avatar-brique-bg: #f7dccf;
+  --avatar-brique-ink: #8a2e12;
+  --avatar-moutarde-bg: #f8e5bf;
+  --avatar-moutarde-ink: #7a4e06;
+  --avatar-sauge-bg: #dcebdf;
+  --avatar-sauge-ink: #2c5a3a;
+  --avatar-ciel-bg: #dce6fb;
+  --avatar-ciel-ink: #1f3f8a;
+
+  --danger: #b42318;
+  --danger-tint: #fdecea;
+  --focus: #1f3f8a;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --canvas: #15191f;
+    --backdrop: #0f1217;
+    --surface: #1e242d;
+    --surface-muted: #252c36;
+    --ink: #f3eee6;
+    --muted: #a7aeb9;
+    --line: #2f3742;
+    --field: #7a8494;
+
+    --brand: #f08a5d;
+    --brand-strong: #f4a37f;
+    --on-brand: #15191f;
+    --brand-tint: #3a2620;
+
+    --positive: #7fd1a0;
+    --positive-tint: #1d3329;
+    --negative: #f4a37f;
+    --negative-tint: #3a2620;
+    --neutral-tint: #252c36;
+
+    --avatar-brique-bg: #4a2a1f;
+    --avatar-brique-ink: #f7c8b2;
+    --avatar-moutarde-bg: #463717;
+    --avatar-moutarde-ink: #f6d98f;
+    --avatar-sauge-bg: #23392b;
+    --avatar-sauge-ink: #b5dcc0;
+    --avatar-ciel-bg: #1f2e4d;
+    --avatar-ciel-ink: #bcd0fb;
+
+    --danger: #f97066;
+    --danger-tint: #3b1d1b;
+    --focus: #bcd0fb;
   }
 }
 
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-backdrop: var(--backdrop);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-field: var(--field);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-on-brand: var(--on-brand);
+  --color-brand-tint: var(--brand-tint);
+  --color-positive: var(--positive);
+  --color-positive-tint: var(--positive-tint);
+  --color-negative: var(--negative);
+  --color-negative-tint: var(--negative-tint);
+  --color-neutral-tint: var(--neutral-tint);
+  --color-danger: var(--danger);
+  --color-danger-tint: var(--danger-tint);
+  --color-focus: var(--focus);
+  --font-sans: var(--font-nunito), ui-rounded, system-ui, sans-serif;
+}
+
+html {
+  background: var(--backdrop);
+  color-scheme: light dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--backdrop);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  accent-color: var(--brand);
+}
+
+/* Large screens: the app sits in a phone-width frame over a pattern of little houses. */
+@media (min-width: 768px) {
+  body {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23b8431f' stroke-opacity='0.13' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M14 38 28 26l14 12v16H14z'/%3E%3Cpath d='M24 54v-8h8v8'/%3E%3Cpath d='M58 84 68 76l10 8'/%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
 }

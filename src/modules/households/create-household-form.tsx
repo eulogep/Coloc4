@@ -28,7 +28,7 @@ export function CreateHouseholdForm() {
         formData.set('timezone', browserTimezone())
         formAction(formData)
       }}
-      className="flex w-full max-w-sm flex-col gap-4"
+      className="flex w-full flex-col gap-4"
     >
       <TextField
         id="name"

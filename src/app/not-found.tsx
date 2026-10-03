@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { fr } from "@/i18n/fr";
+import { buttonClass } from "@/components/ui/button";
+import { MessagePage } from "@/components/ui/message-page";
 
 export default function NotFound() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-4 px-4 py-16 text-center">
-      <h1 className="text-2xl font-semibold">{fr.errors.notFoundTitle}</h1>
-      <p>{fr.errors.notFoundBody}</p>
-      <Link href="/accueil" className="font-medium underline">
+    <MessagePage title={fr.errors.notFoundTitle} body={fr.errors.notFoundBody}>
+      <Link href="/accueil" className={buttonClass("primary")}>
         {fr.errors.home}
       </Link>
-    </main>
+    </MessagePage>
   );
 }
