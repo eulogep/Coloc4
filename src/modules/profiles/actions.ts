@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation'
 import { fr } from '@/i18n/fr'
+import { safeNextPath } from '@/modules/auth/redirect'
 import { requireUser } from '@/modules/auth/session'
 import { normalizeDisplayName } from './display-name'
 
@@ -32,5 +33,5 @@ export async function saveProfile(
     if (inserted.error) return { error: fr.profile.errors.saveFailed }
   }
 
-  redirect('/accueil')
+  redirect(safeNextPath(formData.get('next')))
 }

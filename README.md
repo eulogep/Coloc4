@@ -30,6 +30,8 @@ Never put an `sb_secret_…` key in the app or in a `NEXT_PUBLIC_*` variable.
 | `npm run lint` | ESLint (incl. bigint-only rules for `src/modules/*/domain`) |
 | `npm test` | Vitest unit / property tests |
 | `npm run db:test` | pgTAP database tests (`supabase test db`) |
+| `npm run test:integration` | Concurrency tests against local Postgres (needs `db:start`) |
+| `npm run db:types` | Regenerate `src/lib/supabase/database.types.ts` |
 | `npm run test:e2e` | Build + Playwright (mobile viewport) |
 | `npm run db:reset` | Recreate the local database from migrations |
 

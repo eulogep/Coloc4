@@ -30,6 +30,31 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"household_invitations": {
+                  Row: {
+                    "created_at": string,"created_by_member_id": string,"expires_at": string,"household_id": string,"id": string,"max_uses": number,"revoked_at": string | null,"token_hash": string,"use_count": number
+                  }
+                  Insert: {
+                    "created_at"?: string,"created_by_member_id": string,"expires_at": string,"household_id": string,"id"?: string,"max_uses": number,"revoked_at"?: string | null,"token_hash": string,"use_count"?: number
+                  }
+                  Update: {
+                    "created_at"?: string,"created_by_member_id"?: string,"expires_at"?: string,"household_id"?: string,"id"?: string,"max_uses"?: number,"revoked_at"?: string | null,"token_hash"?: string,"use_count"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "household_invitations_household_id_created_by_member_id_fkey"
+      columns: ["household_id","created_by_member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "household_invitations_household_id_fkey"
+      columns: ["household_id"]
+isOneToOne: false
+      referencedRelation: "households"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"household_members": {
                   Row: {
                     "anonymized_at": string | null,"created_at": string,"display_name_snapshot": string,"household_id": string,"id": string,"joined_at": string,"left_at": string | null,"role": Database["public"]['Enums']["member_role"],"status": Database["public"]['Enums']["member_status"],"updated_at": string,"user_id": string | null
@@ -83,6 +108,24 @@ isOneToOne: false
           Functions: {
             "create_household":
 { Args: { "p_name": string,"p_timezone": string }; Returns: string
+                           },
+"create_invitation":
+{ Args: { "p_household_id": string }; Returns: {
+              "expires_at": string,"invitation_id": string,"max_uses": number,"token": string
+            }[]
+                           },
+"join_household":
+{ Args: { "p_token": string }; Returns: {
+              "result_code": string,"target_household_id": string
+            }[]
+                           },
+"preview_invitation":
+{ Args: { "p_token": string }; Returns: {
+              "household_name": string,"result_code": string,"target_household_id": string
+            }[]
+                           },
+"revoke_invitation":
+{ Args: { "p_invitation_id": string }; Returns: undefined
                            }
           }
           Enums: {
