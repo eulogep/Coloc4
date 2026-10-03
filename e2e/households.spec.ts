@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { createHousehold, openTab, signUpWithProfile } from './support/flows'
+import { createHousehold, openTab, signUpWithProfile, newPage } from './support/flows'
 
 test('a new user creates a household and becomes its owner', async ({ page }) => {
   await signUpWithProfile(page, 'Emma')
@@ -24,11 +24,11 @@ test('a new user creates a household and becomes its owner', async ({ page }) =>
 })
 
 test('E2E-4: a user from another household gets the same not-found page', async ({ browser }) => {
-  const owner = await browser.newPage()
+  const owner = await newPage(browser)
   await signUpWithProfile(owner, 'Emma')
   const householdUrl = await createHousehold(owner, 'Coloc privée')
 
-  const outsider = await browser.newPage()
+  const outsider = await newPage(browser)
   await signUpWithProfile(outsider, 'Intrus')
   for (const path of ['', '/depenses', '/membres', '/depenses/nouvelle']) {
     await outsider.goto(householdUrl + path)
