@@ -47,5 +47,7 @@
   },
   "engines": {
     "node": ">=24"
-  }
+  },
+  "license": "Apache-2.0",
+  "author": "Euloge Mabiala Junior"
 }

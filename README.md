@@ -134,4 +134,4 @@ L'appli ne demande que l'email, un prénom ou surnom et les dépenses saisies : 
 
 ## Licence
 
-[Apache 2.0](LICENSE)
+Copyright © 2026 Euloge Mabiala Junior — [Apache 2.0](LICENSE).
