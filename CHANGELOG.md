@@ -2,6 +2,11 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) ; versions numérotées en [SemVer](https://semver.org/lang/fr/) (0.x = version de test).
 
+## [Non publié]
+
+### Ajouté
+- **Guide d'utilisation interactif** (`/guide`) : quatre étapes et deux démos qui utilisent le vrai moteur de calcul ; liens depuis l'accueil, « Mon compte » et l'état vide des dépenses.
+
 ## [0.1.0] — 2026-10-03 · « La maison en commun »
 
 Première version complète du jalon **M1 — l'argent fonctionne**, prête pour l'essai à quatre colocataires.

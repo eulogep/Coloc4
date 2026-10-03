@@ -63,6 +63,7 @@ Coloc4 rassemble l'essentiel au même endroit :
 | **Soldes** | Solde personnel expliqué, remboursements conseillés, remboursements enregistrés (annulables) |
 | **Anciens colocataires** | Ils restent visibles tant que leur solde n'est pas réglé ; ils ne peuvent plus être ajoutés aux nouvelles dépenses |
 | **Vie privée** | Suppression de compte : le nom devient « Ancien colocataire N », les montants restent pour que les soldes des autres restent justes |
+| **Guide interactif** | Une page « Comment ça marche ? » en quatre étapes, avec des démos pour essayer sans risque (répartition d'une dépense, soldes qui bougent, remboursement) ; accessible avant même de créer un compte |
 | **Pour tout le monde** | Français, pensé pour le mobile, mode clair/sombre, boutons larges, contrastes vérifiés (WCAG AA), installable sur l'écran d'accueil |
 
 **Prochaines étapes :** un essai réel de deux semaines avec quatre colocataires, puis les tâches ménagères, la liste de courses et l'agenda partagé. Ce qui sera construit dépendra de ce que l'essai montrera.
