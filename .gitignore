@@ -47,3 +47,6 @@ next-env.d.ts
 /playwright-report/
 /test-results/
 node_modules
+
+# database dumps contain personal data — never commit
+/backups/
