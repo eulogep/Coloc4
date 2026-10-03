@@ -1,6 +1,12 @@
 import { expect, type Browser, type Page } from '@playwright/test'
 
 export const PASSWORD = 'motdepasse123'
+
+/** A fresh, isolated browser context (separate cookies = separate user). */
+export async function newPage(browser: Browser): Promise<Page> {
+  const context = await browser.newContext()
+  return context.newPage()
+}
 export const uniqueEmail = () => `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@test.local`
 
 export async function signUp(page: Page, email = uniqueEmail()) {
@@ -57,14 +63,14 @@ export async function joinViaLink(page: Page, link: string) {
 
 /** Owner + (names.length) members who joined through one invitation link. */
 export async function householdWithMembers(browser: Browser, ownerName: string, names: string[], householdName = 'Coloc') {
-  const owner = await browser.newPage()
+  const owner = await newPage(browser)
   await signUpWithProfile(owner, ownerName)
   const householdUrl = await createHousehold(owner, householdName)
   const link = await createInviteLink(owner)
   const others: Page[] = []
   const emails: string[] = []
   for (const name of names) {
-    const page = await browser.newPage()
+    const page = await newPage(browser)
     emails.push(await signUpWithProfile(page, name))
     await joinViaLink(page, link)
     others.push(page)

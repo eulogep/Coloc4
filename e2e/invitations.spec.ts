@@ -1,14 +1,14 @@
 import { expect, test } from '@playwright/test'
-import { chooseDisplayName, createHousehold, createInviteLink, openTab, signUp, signUpWithProfile } from './support/flows'
+import { chooseDisplayName, createHousehold, createInviteLink, openTab, signUp, signUpWithProfile, newPage } from './support/flows'
 
 test('E2E-1: signup → create household → invite → second user joins', async ({ browser }) => {
-  const owner = await browser.newPage()
+  const owner = await newPage(browser)
   await signUpWithProfile(owner, 'Emma')
   const householdUrl = await createHousehold(owner, 'Coloc des Lilas')
   const link = await createInviteLink(owner)
 
   // The guest opens the link while signed out, creates an account, picks a name, joins.
-  const guest = await browser.newPage()
+  const guest = await newPage(browser)
   await guest.goto(link)
   await expect(guest).toHaveURL(/\/rejoindre$/) // token removed from the address bar
   await expect(guest.getByText('Connecte-toi ou crée un compte pour rejoindre cette colocation.')).toBeVisible()
@@ -39,7 +39,7 @@ test('E2E-1: signup → create household → invite → second user joins', asyn
 })
 
 test('a revoked link shows the revoked message and the next action', async ({ browser }) => {
-  const owner = await browser.newPage()
+  const owner = await newPage(browser)
   await signUpWithProfile(owner, 'Emma')
   await createHousehold(owner, 'Coloc')
   const link = await createInviteLink(owner)
@@ -47,7 +47,7 @@ test('a revoked link shows the revoked message and the next action', async ({ br
   await owner.getByRole('button', { name: 'Désactiver' }).click()
   await expect(owner.getByText('Aucun lien actif.')).toBeVisible()
 
-  const guest = await browser.newPage()
+  const guest = await newPage(browser)
   await signUpWithProfile(guest, 'Lucas')
   await guest.goto(link)
   await expect(guest.getByRole('main').getByRole('alert')).toHaveText('Ce lien d’invitation a été désactivé.')

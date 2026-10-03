@@ -235,6 +235,14 @@ export const fr = {
       UNKNOWN: 'Impossible de supprimer le compte. Réessaie.',
     },
   },
+  errors: {
+    title: 'Oups, quelque chose s’est mal passé.',
+    body: 'Vérifie ta connexion internet, puis réessaie. Ce que tu as saisi n’a peut-être pas été enregistré.',
+    retry: 'Réessayer',
+    notFoundTitle: 'Page introuvable',
+    notFoundBody: 'Cette page n’existe pas ou n’est plus disponible.',
+    home: 'Retour à l’accueil',
+  },
   invitations: {
     title: 'Inviter un colocataire',
     intro: 'Envoie ce lien dans le groupe de la coloc. Il est valable 7 jours et 10 fois.',
