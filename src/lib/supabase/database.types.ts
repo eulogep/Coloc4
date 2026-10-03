@@ -23,11 +23,103 @@ isOneToOne: false
       referencedRelation: "household_members"
       referencedColumns: ["household_id","id"]
     },{
+      foreignKeyName: "activity_logs_household_id_actor_member_id_fkey"
+      columns: ["household_id","actor_member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
+    },{
       foreignKeyName: "activity_logs_household_id_fkey"
       columns: ["household_id"]
 isOneToOne: false
       referencedRelation: "households"
       referencedColumns: ["id"]
+    }
+                  ]
+                },"expense_shares": {
+                  Row: {
+                    "expense_id": string,"household_id": string,"member_id": string,"share_amount_minor": number
+                  }
+                  Insert: {
+                    "expense_id": string,"household_id": string,"member_id": string,"share_amount_minor": number
+                  }
+                  Update: {
+                    "expense_id"?: string,"household_id"?: string,"member_id"?: string,"share_amount_minor"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "expense_shares_household_id_expense_id_fkey"
+      columns: ["household_id","expense_id"]
+isOneToOne: false
+      referencedRelation: "expenses"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "expense_shares_household_id_member_id_fkey"
+      columns: ["household_id","member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "expense_shares_household_id_member_id_fkey"
+      columns: ["household_id","member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
+    }
+                  ]
+                },"expenses": {
+                  Row: {
+                    "amount_minor": number,"created_at": string,"created_by_member_id": string,"deleted_at": string | null,"deleted_by_member_id": string | null,"household_id": string,"id": string,"paid_by_member_id": string,"spent_on": string,"split_mode": Database["public"]['Enums']["split_mode"],"title": string,"updated_at": string
+                  }
+                  Insert: {
+                    "amount_minor": number,"created_at"?: string,"created_by_member_id": string,"deleted_at"?: string | null,"deleted_by_member_id"?: string | null,"household_id": string,"id"?: string,"paid_by_member_id": string,"spent_on": string,"split_mode": Database["public"]['Enums']["split_mode"],"title": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "amount_minor"?: number,"created_at"?: string,"created_by_member_id"?: string,"deleted_at"?: string | null,"deleted_by_member_id"?: string | null,"household_id"?: string,"id"?: string,"paid_by_member_id"?: string,"spent_on"?: string,"split_mode"?: Database["public"]['Enums']["split_mode"],"title"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "expenses_household_id_created_by_member_id_fkey"
+      columns: ["household_id","created_by_member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "expenses_household_id_created_by_member_id_fkey"
+      columns: ["household_id","created_by_member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
+    },{
+      foreignKeyName: "expenses_household_id_deleted_by_member_id_fkey"
+      columns: ["household_id","deleted_by_member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "expenses_household_id_deleted_by_member_id_fkey"
+      columns: ["household_id","deleted_by_member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
+    },{
+      foreignKeyName: "expenses_household_id_fkey"
+      columns: ["household_id"]
+isOneToOne: false
+      referencedRelation: "households"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "expenses_household_id_paid_by_member_id_fkey"
+      columns: ["household_id","paid_by_member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "expenses_household_id_paid_by_member_id_fkey"
+      columns: ["household_id","paid_by_member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
     }
                   ]
                 },"household_invitations": {
@@ -47,6 +139,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "household_members"
       referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "household_invitations_household_id_created_by_member_id_fkey"
+      columns: ["household_id","created_by_member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
     },{
       foreignKeyName: "household_invitations_household_id_fkey"
       columns: ["household_id"]
@@ -100,19 +198,114 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"settlements": {
+                  Row: {
+                    "amount_minor": number,"created_at": string,"created_by_member_id": string,"deleted_at": string | null,"deleted_by_member_id": string | null,"from_member_id": string,"household_id": string,"id": string,"settled_on": string,"to_member_id": string,"updated_at": string
+                  }
+                  Insert: {
+                    "amount_minor": number,"created_at"?: string,"created_by_member_id": string,"deleted_at"?: string | null,"deleted_by_member_id"?: string | null,"from_member_id": string,"household_id": string,"id"?: string,"settled_on": string,"to_member_id": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "amount_minor"?: number,"created_at"?: string,"created_by_member_id"?: string,"deleted_at"?: string | null,"deleted_by_member_id"?: string | null,"from_member_id"?: string,"household_id"?: string,"id"?: string,"settled_on"?: string,"to_member_id"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "settlements_household_id_created_by_member_id_fkey"
+      columns: ["household_id","created_by_member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "settlements_household_id_created_by_member_id_fkey"
+      columns: ["household_id","created_by_member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
+    },{
+      foreignKeyName: "settlements_household_id_deleted_by_member_id_fkey"
+      columns: ["household_id","deleted_by_member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "settlements_household_id_deleted_by_member_id_fkey"
+      columns: ["household_id","deleted_by_member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
+    },{
+      foreignKeyName: "settlements_household_id_fkey"
+      columns: ["household_id"]
+isOneToOne: false
+      referencedRelation: "households"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "settlements_household_id_from_member_id_fkey"
+      columns: ["household_id","from_member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "settlements_household_id_from_member_id_fkey"
+      columns: ["household_id","from_member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
+    },{
+      foreignKeyName: "settlements_household_id_to_member_id_fkey"
+      columns: ["household_id","to_member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "settlements_household_id_to_member_id_fkey"
+      columns: ["household_id","to_member_id"]
+isOneToOne: false
+      referencedRelation: "member_balances"
+      referencedColumns: ["household_id","member_id"]
+    }
+                  ]
                 }
           }
           Views: {
-            [_ in never]: never
+            "member_balances": {
+                  Row: {
+                    "display_name_snapshot": string | null,"household_id": string | null,"member_id": string | null,"net_minor": string | null,"status": Database["public"]['Enums']["member_status"] | null
+                  }
+                  Insert: {
+                           "display_name_snapshot"?: string | null,"household_id"?: string | null,"member_id"?: string | null,"net_minor"?: never,"status"?: Database["public"]['Enums']["member_status"] | null
+                         }
+                        Update: {
+                           "display_name_snapshot"?: string | null,"household_id"?: string | null,"member_id"?: string | null,"net_minor"?: never,"status"?: Database["public"]['Enums']["member_status"] | null
+                         }
+                        Relationships: [
+                    {
+      foreignKeyName: "household_members_household_id_fkey"
+      columns: ["household_id"]
+isOneToOne: false
+      referencedRelation: "households"
+      referencedColumns: ["id"]
+    }
+                  ]
+                }
           }
           Functions: {
-            "create_household":
+            "create_expense":
+{ Args: { "p_amount_minor": string,"p_household_id": string,"p_paid_by_member_id": string,"p_participants": Json,"p_spent_on": string,"p_split_mode": Database["public"]['Enums']["split_mode"],"p_title": string }; Returns: string
+                           },
+"create_household":
 { Args: { "p_name": string,"p_timezone": string }; Returns: string
                            },
 "create_invitation":
 { Args: { "p_household_id": string }; Returns: {
               "expires_at": string,"invitation_id": string,"max_uses": number,"token": string
             }[]
+                           },
+"delete_expense":
+{ Args: { "p_expense_id": string }; Returns: undefined
+                           },
+"delete_settlement":
+{ Args: { "p_settlement_id": string }; Returns: undefined
                            },
 "join_household":
 { Args: { "p_token": string }; Returns: {
@@ -124,12 +317,20 @@ isOneToOne: false
               "household_name": string,"result_code": string,"target_household_id": string
             }[]
                            },
+"record_settlement":
+{ Args: { "p_amount_minor": string,"p_confirm_overshoot"?: boolean,"p_from_member_id": string,"p_household_id": string,"p_settled_on": string,"p_to_member_id": string }; Returns: {
+              "result_code": string,"settlement_id": string
+            }[]
+                           },
 "revoke_invitation":
 { Args: { "p_invitation_id": string }; Returns: undefined
+                           },
+"update_expense":
+{ Args: { "p_amount_minor": string,"p_expense_id": string,"p_paid_by_member_id": string,"p_participants": Json,"p_spent_on": string,"p_split_mode": Database["public"]['Enums']["split_mode"],"p_title": string }; Returns: undefined
                            }
           }
           Enums: {
-            "member_role": "owner"|"member","member_status": "active"|"left"|"anonymized"
+            "member_role": "owner"|"member","member_status": "active"|"left"|"anonymized","split_mode": "equal"|"exact"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -245,7 +446,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            "member_role": ["owner", "member"],"member_status": ["active", "left", "anonymized"]
+            "member_role": ["owner", "member"],"member_status": ["active", "left", "anonymized"],"split_mode": ["equal", "exact"]
           }
         }
 } as const
