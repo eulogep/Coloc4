@@ -1,15 +1,7 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/modules/auth/session";
 
-// Every route in this group requires a verified session.
-// getClaims() verifies the JWT; getSession() alone must not be trusted on the server.
+// Every route in this group requires a verified session (getClaims, not getSession).
 export default async function AuthenticatedLayout({ children }: LayoutProps<"/">) {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getClaims();
-
-  if (error || !data?.claims) {
-    redirect("/connexion");
-  }
-
+  await requireUser();
   return <>{children}</>;
 }

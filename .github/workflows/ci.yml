@@ -37,6 +37,10 @@ jobs:
         run: npx supabase start --exclude studio,imgproxy,edge-runtime,logflare,vector,supavisor
       - name: Database tests (pgTAP, incl. RLS-enabled check)
         run: npm run db:test
+      - name: Generated DB types are up to date
+        run: |
+          npm run db:types
+          git diff --exit-code src/lib/supabase/database.types.ts
       - name: Write public env for the app
         run: |
           npx supabase status -o env \
