@@ -31,6 +31,16 @@ export function parseEurAmount(input: string): Result<Minor, ParseAmountError> {
   return ok(minor)
 }
 
+/** Like parseEurAmount but accepts 0 (an exact-split share may be zero; empty = 0). */
+export function parseEurShare(input: string): Result<Minor, Exclude<ParseAmountError, 'NOT_POSITIVE'>> {
+  if (input.trim() === '') return ok(0n)
+  const parsed = parseEurAmount(input)
+  if (parsed.ok) return parsed
+  if (parsed.error === 'NOT_POSITIVE') return ok(0n)
+  if (parsed.error === 'EMPTY') return ok(0n)
+  return err(parsed.error)
+}
+
 const eurFormatter = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' })
 
 /** 4237n → "42,37 €" (fr-FR). Formats an exact decimal string, never a float. */

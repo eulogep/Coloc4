@@ -1,7 +1,7 @@
 -- T-0008 — expense and settlement RPCs (design §4.6, §4.8, §4.13, §4.15, §9.4, §9.5).
 begin;
 \ir helpers/auth.psql
-select plan(43);
+select plan(44);
 
 select tests.create_user('a@test.local') as a \gset
 select tests.create_user('b@test.local') as b \gset
@@ -33,6 +33,9 @@ select is(pg_temp.net(:'ma'), 6000::bigint, 'Alice is owed 60 €');
 select is(pg_temp.net(:'mb'), -2000::bigint, 'Bob owes 20 €');
 select is((select sum(net_minor::bigint) from public.member_balances where household_id = :'h'), 0::numeric,
   'Σ net = 0');
+-- Deferred checks run at COMMIT as the calling role: force them now, still authenticated.
+select lives_ok($$ set constraints all immediate $$, 'deferred share-sum check passes as the authenticated caller');
+set constraints all deferred;
 select ok((select summary ? 'amount_minor' and not summary ? 'title' from public.activity_logs
            where entity_id = :'e1' and action = 'expense.created'), 'activity has amount, no free text');
 

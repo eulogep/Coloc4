@@ -1,4 +1,5 @@
 import 'server-only'
+import { cache } from 'react'
 import { isUuid } from '@/lib/uuid'
 import { requireUser } from '@/modules/auth/session'
 import type { Database } from '@/lib/supabase/database.types'
@@ -35,7 +36,8 @@ export async function listMyHouseholds(): Promise<HouseholdSummary[]> {
 }
 
 // null = not found or not an active member (indistinguishable on purpose).
-export async function getHousehold(householdId: string): Promise<HouseholdDetail | null> {
+// Cached per request: the household layout and its pages share one lookup.
+export const getHousehold = cache(async (householdId: string): Promise<HouseholdDetail | null> => {
   if (!isUuid(householdId)) return null
   const { supabase, userId } = await requireUser()
 
@@ -65,4 +67,4 @@ export async function getHousehold(householdId: string): Promise<HouseholdDetail
       isMe: m.id === me.id,
     })),
   }
-}
+})

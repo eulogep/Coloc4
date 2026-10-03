@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { chooseDisplayName, createHousehold, createInviteLink, signUp, signUpWithProfile } from './support/flows'
+import { chooseDisplayName, createHousehold, createInviteLink, openTab, signUp, signUpWithProfile } from './support/flows'
 
 test('E2E-1: signup → create household → invite → second user joins', async ({ browser }) => {
   const owner = await browser.newPage()
@@ -23,7 +23,8 @@ test('E2E-1: signup → create household → invite → second user joins', asyn
   await expect(guest.getByText('Rejoindre « Coloc des Lilas » ?')).toBeVisible()
   await guest.getByRole('button', { name: 'Rejoindre' }).click()
 
-  await expect(guest).toHaveURL(householdUrl)
+  await expect(guest).toHaveURL(`${householdUrl}/depenses`)
+  await openTab(guest, 'Colocation')
   await expect(guest.getByRole('listitem').filter({ hasText: 'Lucas' })).toContainText('(toi)')
   await expect(guest.getByRole('listitem').filter({ hasText: 'Emma' })).toContainText('responsable')
 
