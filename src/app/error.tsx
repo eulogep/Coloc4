@@ -2,23 +2,19 @@
 
 import Link from "next/link";
 import { fr } from "@/i18n/fr";
+import { buttonClass } from "@/components/ui/button";
+import { MessagePage } from "@/components/ui/message-page";
 
 // Network or server failure (§13.8): explain, offer retry, never show internals.
 export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-4 px-4 py-16 text-center">
-      <h1 className="text-2xl font-semibold">{fr.errors.title}</h1>
-      <p className="max-w-sm">{fr.errors.body}</p>
-      <button
-        type="button"
-        onClick={reset}
-        className="min-h-12 rounded-full bg-foreground px-6 font-medium text-background focus-visible:outline-2 focus-visible:outline-offset-2"
-      >
+    <MessagePage title={fr.errors.title} body={fr.errors.body}>
+      <button type="button" onClick={reset} className={buttonClass("primary")}>
         {fr.errors.retry}
       </button>
-      <Link href="/accueil" className="font-medium underline">
+      <Link href="/accueil" className={buttonClass("secondary")}>
         {fr.errors.home}
       </Link>
-    </main>
+    </MessagePage>
   );
 }

@@ -1,62 +1,78 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ChevronRight, House, LogOut, Pencil, Plus, ShieldCheck } from "lucide-react";
 import { fr } from "@/i18n/fr";
+import { Avatar } from "@/components/ui/avatar";
+import { Page, PageTitle, SectionTitle } from "@/components/ui/page";
 import { signOut } from "@/modules/auth/actions";
 import { DeleteAccountForm } from "@/modules/auth/delete-account-form";
 import { listMyHouseholds } from "@/modules/households/queries";
 import { getMyProfile } from "@/modules/profiles/queries";
 
-const linkClass =
-  "flex min-h-12 items-center rounded-lg border border-zinc-400 px-4 font-medium focus-visible:outline-2 focus-visible:outline-offset-2";
+const rowClass = "flex min-h-14 w-full items-center gap-3 px-4 text-left font-bold hover:bg-surface-muted";
 
 export default async function AccountPage() {
   const [profile, households] = await Promise.all([getMyProfile(), listMyHouseholds()]);
   if (!profile) redirect("/profil");
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-6 px-4 py-8">
-      <h1 className="text-2xl font-semibold">{fr.account.title}</h1>
-      <p className="text-lg">{fr.app.greeting(profile.displayName)}</p>
+    <Page>
+      <PageTitle>{fr.account.title}</PageTitle>
+      <div className="flex items-center gap-4 rounded-3xl border border-line bg-surface p-5">
+        <Avatar id={profile.displayName} name={profile.displayName} size="lg" />
+        <p className="text-xl font-extrabold">{fr.app.greeting(profile.displayName)}</p>
+      </div>
 
-      <section className="flex flex-col gap-2">
-        <h2 className="text-lg font-medium">{fr.households.listTitle}</h2>
-        {households.length === 0 ? (
-          <p>{fr.households.emptyTitle}</p>
-        ) : (
-          <ul className="flex flex-col gap-2">
-            {households.map((h) => (
-              <li key={h.id}>
-                <Link href={`/colocations/${h.id}`} className={linkClass}>
-                  {h.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-        <Link href="/colocations/nouvelle" className={linkClass}>
-          {fr.households.create}
-        </Link>
+      <section className="flex flex-col gap-3">
+        <SectionTitle>{fr.households.listTitle}</SectionTitle>
+        <ul className="flex flex-col divide-y divide-line overflow-hidden rounded-3xl border border-line bg-surface">
+          {households.length === 0 && <li className="px-4 py-4 text-muted">{fr.households.emptyTitle}</li>}
+          {households.map((h) => (
+            <li key={h.id}>
+              <Link href={`/colocations/${h.id}`} className={rowClass}>
+                <House aria-hidden="true" className="size-5 text-brand" />
+                <span className="flex-1">{h.name}</span>
+                <ChevronRight aria-hidden="true" className="size-5 text-muted" />
+              </Link>
+            </li>
+          ))}
+          <li>
+            <Link href="/colocations/nouvelle" className={rowClass}>
+              <Plus aria-hidden="true" className="size-5 text-brand" />
+              <span className="flex-1">{fr.households.create}</span>
+            </Link>
+          </li>
+        </ul>
       </section>
 
-      <section className="flex flex-col gap-2">
-        <Link href="/profil" className={linkClass}>
-          {fr.account.editName}
-        </Link>
-        <Link href="/donnees" className={linkClass}>
-          {fr.auth.dataLink}
-        </Link>
-        <form action={signOut}>
-          <button type="submit" className={`${linkClass} w-full`}>
-            {fr.auth.signOut}
-          </button>
-        </form>
-      </section>
+      <ul className="flex flex-col divide-y divide-line overflow-hidden rounded-3xl border border-line bg-surface">
+        <li>
+          <Link href="/profil" className={rowClass}>
+            <Pencil aria-hidden="true" className="size-5 text-muted" />
+            <span className="flex-1">{fr.account.editName}</span>
+          </Link>
+        </li>
+        <li>
+          <Link href="/donnees" className={rowClass}>
+            <ShieldCheck aria-hidden="true" className="size-5 text-muted" />
+            <span className="flex-1">{fr.auth.dataLink}</span>
+          </Link>
+        </li>
+        <li>
+          <form action={signOut}>
+            <button type="submit" className={rowClass}>
+              <LogOut aria-hidden="true" className="size-5 text-muted" />
+              <span className="flex-1">{fr.auth.signOut}</span>
+            </button>
+          </form>
+        </li>
+      </ul>
 
-      <section className="flex flex-col gap-2 rounded-lg border border-red-700 p-4">
-        <h2 className="text-lg font-medium">{fr.account.deleteTitle}</h2>
-        <p className="text-sm">{fr.account.deleteIntro}</p>
+      <section className="flex flex-col gap-3 rounded-3xl border-2 border-danger/40 bg-surface p-5">
+        <SectionTitle>{fr.account.deleteTitle}</SectionTitle>
+        <p className="text-sm text-muted">{fr.account.deleteIntro}</p>
         <DeleteAccountForm />
       </section>
-    </main>
+    </Page>
   );
 }

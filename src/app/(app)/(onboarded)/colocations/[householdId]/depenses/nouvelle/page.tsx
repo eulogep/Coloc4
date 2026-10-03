@@ -11,8 +11,8 @@ export default async function NewExpensePage({ params }: PageProps<"/colocations
   const active = household.members.filter((m) => m.status === "active");
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 py-6">
-      <h1 className="text-2xl font-semibold">{fr.expenses.newTitle}</h1>
+    <main className="flex w-full flex-1 flex-col gap-5 px-4 pt-6 pb-8">
+      <h1 className="text-3xl font-extrabold tracking-tight">{fr.expenses.newTitle}</h1>
       <ExpenseForm
         householdId={household.id}
         expenseId={null}

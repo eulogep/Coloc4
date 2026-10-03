@@ -1,4 +1,5 @@
 import { fr } from "@/i18n/fr";
+import { AuthShell } from "@/components/ui/auth-shell";
 import { safeNextPath } from "@/modules/auth/redirect";
 import { getMyProfile } from "@/modules/profiles/queries";
 import { ProfileForm } from "@/modules/profiles/profile-form";
@@ -7,10 +8,8 @@ export default async function ProfilePage({ searchParams }: PageProps<"/profil">
   const [{ suivant }, profile] = await Promise.all([searchParams, getMyProfile()]);
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-12 text-center">
-      <h1 className="text-2xl font-semibold">{fr.profile.title}</h1>
-      <p>{fr.profile.intro}</p>
+    <AuthShell title={fr.profile.title} intro={fr.profile.intro}>
       <ProfileForm initialDisplayName={profile?.displayName ?? ""} next={safeNextPath(suivant)} />
-    </main>
+    </AuthShell>
   );
 }

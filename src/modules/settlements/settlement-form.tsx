@@ -4,7 +4,8 @@ import { useActionState, useState } from 'react'
 import { fr } from '@/i18n/fr'
 import { FormMessage } from '@/components/ui/form-message'
 import { SubmitButton } from '@/components/ui/submit-button'
-import { TextField } from '@/components/ui/text-field'
+import { TextField, fieldClass } from '@/components/ui/text-field'
+import { buttonClass } from '@/components/ui/button'
 import { recordSettlement, type SettlementFormState } from './actions'
 
 export type Counterpart = { id: string; label: string }
@@ -32,14 +33,14 @@ export function SettlementForm({ householdId, myMemberId, counterparts, defaults
   return (
     <form action={formAction} className="flex w-full flex-col gap-5">
       <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 font-medium">{fr.settlements.direction}</legend>
+        <legend className="mb-1 font-bold">{fr.settlements.direction}</legend>
         {(
           [
             ['sent', fr.settlements.iPaid],
             ['received', fr.settlements.iWasPaid],
           ] as const
         ).map(([value, text]) => (
-          <label key={value} className="flex min-h-12 items-center gap-3 rounded-lg border border-zinc-300 px-3">
+          <label key={value} className="flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl border-2 border-line bg-surface px-4 font-bold has-[:checked]:border-brand has-[:checked]:bg-brand-tint">
             <input
               type="radio"
               name="direction"
@@ -53,8 +54,8 @@ export function SettlementForm({ householdId, myMemberId, counterparts, defaults
         ))}
       </fieldset>
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor="other" className="font-medium">
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="other" className="font-bold">
           {direction === 'sent' ? fr.settlements.otherPaid : fr.settlements.otherReceived}
         </label>
         <select
@@ -62,7 +63,7 @@ export function SettlementForm({ householdId, myMemberId, counterparts, defaults
           name="other"
           value={other}
           onChange={(e) => setOther(e.target.value)}
-          className="min-h-12 rounded-lg border border-zinc-400 bg-background px-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2"
+          className={fieldClass}
         >
           {counterparts.map((c) => (
             <option key={c.id} value={c.id}>
@@ -96,15 +97,15 @@ export function SettlementForm({ householdId, myMemberId, counterparts, defaults
       <FormMessage error={state.error} />
 
       {state.needsConfirmation ? (
-        <div role="alert" className="flex flex-col gap-3 rounded-lg border border-amber-700 p-3">
-          <p className="font-medium">{fr.settlements.overshootTitle}</p>
+        <div role="alert" className="flex flex-col gap-3 rounded-2xl bg-negative-tint p-4">
+          <p className="font-extrabold">{fr.settlements.overshootTitle}</p>
           <p>{fr.settlements.overshoot(otherName)}</p>
           <button
             type="submit"
             name="confirmOvershoot"
             value="true"
             disabled={pending}
-            className="min-h-12 rounded-full bg-foreground px-6 font-medium text-background disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2"
+            className={buttonClass('primary')}
           >
             {fr.settlements.confirmOvershoot}
           </button>

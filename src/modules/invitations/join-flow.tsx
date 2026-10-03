@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useSyncExternalStore, useTransition } from 'react'
 import { fr } from '@/i18n/fr'
+import { buttonClass } from '@/components/ui/button'
+import { LogoMark } from '@/components/ui/logo'
 import { joinWithInvitation, previewInvitation, type PreviewOutcome } from './actions'
 
 const STORAGE_KEY = 'coloc4.invitation'
@@ -41,8 +43,6 @@ type View =
   | { kind: 'preview'; outcome: PreviewOutcome }
   | { kind: 'message'; text: string; householdId?: string | null; askNewLink?: boolean }
 
-const linkClass =
-  'flex min-h-12 items-center justify-center rounded-full px-6 font-medium focus-visible:outline-2 focus-visible:outline-offset-2'
 
 // Reads the raw token once: from the URL fragment (then stored for the sign-in
 // detour and removed from the address bar), else from this tab's storage.
@@ -106,14 +106,14 @@ function JoinFlowClient() {
     })
   }
 
-  if (view.kind === 'loading') return <p role="status">{fr.join.checking}</p>
+  if (view.kind === 'loading') return <p role="status" className="text-muted">{fr.join.checking}</p>
 
   if (view.kind === 'message') {
     return (
       <div className="flex flex-col items-center gap-4 text-center">
-        <p role="alert">{view.text}</p>
-        {view.askNewLink && <p>{fr.join.askNewLink}</p>}
-        <Link href="/accueil" className="font-medium underline">
+        <p role="alert" className="rounded-2xl bg-danger-tint px-4 py-3 font-bold text-danger">{view.text}</p>
+        {view.askNewLink && <p className="text-muted">{fr.join.askNewLink}</p>}
+        <Link href="/accueil" className="font-bold underline underline-offset-4">
           {fr.join.backHome}
         </Link>
       </div>
@@ -125,12 +125,12 @@ function JoinFlowClient() {
     case 'AUTH_REQUIRED': {
       const next = encodeURIComponent(JOIN_PATH)
       return (
-        <div className="flex w-full max-w-sm flex-col gap-3 text-center">
+        <div className="flex w-full flex-col gap-3 text-center">
           <p>{fr.join.authRequired}</p>
-          <Link href={`/inscription?suivant=${next}`} className={`${linkClass} bg-foreground text-background`}>
+          <Link href={`/inscription?suivant=${next}`} className={buttonClass('primary')}>
             {fr.home.signUp}
           </Link>
-          <Link href={`/connexion?suivant=${next}`} className={`${linkClass} border border-zinc-400`}>
+          <Link href={`/connexion?suivant=${next}`} className={buttonClass('secondary')}>
             {fr.home.signIn}
           </Link>
         </div>
@@ -138,11 +138,11 @@ function JoinFlowClient() {
     }
     case 'PROFILE_REQUIRED':
       return (
-        <div className="flex w-full max-w-sm flex-col gap-3 text-center">
+        <div className="flex w-full flex-col gap-3 text-center">
           <p>{fr.join.profileRequired}</p>
           <Link
             href={`/profil?suivant=${encodeURIComponent(JOIN_PATH)}`}
-            className={`${linkClass} bg-foreground text-background`}
+            className={buttonClass('primary')}
           >
             {fr.join.chooseName}
           </Link>
@@ -150,14 +150,15 @@ function JoinFlowClient() {
       )
     case 'VALID':
       return (
-        <div className="flex w-full max-w-sm flex-col gap-4 text-center">
-          <p className="text-xl font-medium">{fr.join.confirm(outcome.householdName ?? '')}</p>
-          <p>{fr.join.confirmHint}</p>
+        <div className="flex w-full flex-col items-stretch gap-4 text-center">
+          <LogoMark size={72} className="self-center" />
+          <p className="text-2xl font-extrabold">{fr.join.confirm(outcome.householdName ?? '')}</p>
+          <p className="text-muted">{fr.join.confirmHint}</p>
           <button
             type="button"
             onClick={join}
             disabled={pending}
-            className={`${linkClass} bg-foreground text-background disabled:opacity-60`}
+            className={buttonClass('primary')}
           >
             {pending ? fr.join.pending : fr.join.submit}
           </button>
@@ -166,23 +167,23 @@ function JoinFlowClient() {
     case 'ALREADY_MEMBER':
       storeToken(null)
       return (
-        <div className="flex w-full max-w-sm flex-col gap-4 text-center">
+        <div className="flex w-full flex-col items-stretch gap-4 text-center">
           <p>{fr.join.results.ALREADY_MEMBER}</p>
-          <Link href={`/colocations/${outcome.householdId}`} className={`${linkClass} bg-foreground text-background`}>
+          <Link href={`/colocations/${outcome.householdId}`} className={buttonClass('primary')}>
             {fr.join.goToHousehold}
           </Link>
         </div>
       )
     case 'ERROR':
     case 'RATE_LIMITED':
-      return <p role="alert">{fr.join.results[outcome.code]}</p>
+      return <p role="alert" className="rounded-2xl bg-danger-tint px-4 py-3 font-bold text-danger">{fr.join.results[outcome.code]}</p>
     default:
       storeToken(null)
       return (
         <div className="flex flex-col items-center gap-4 text-center">
-          <p role="alert">{fr.join.results[outcome.code]}</p>
-          <p>{fr.join.askNewLink}</p>
-          <Link href="/accueil" className="font-medium underline">
+          <p role="alert" className="rounded-2xl bg-danger-tint px-4 py-3 font-bold text-danger">{fr.join.results[outcome.code]}</p>
+          <p className="text-muted">{fr.join.askNewLink}</p>
+          <Link href="/accueil" className="font-bold underline underline-offset-4">
             {fr.join.backHome}
           </Link>
         </div>

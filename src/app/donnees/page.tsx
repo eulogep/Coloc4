@@ -1,46 +1,58 @@
 import Link from "next/link";
+import { ArrowLeft, Ban, Eye, Server, Trash2, UserRound, Mail } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { fr } from "@/i18n/fr";
+import { Page, PageTitle } from "@/components/ui/page";
+
+function Section({ Icon, title, children }: { Icon: LucideIcon; title: string; children: React.ReactNode }) {
+  return (
+    <section className="flex gap-4 rounded-3xl border border-line bg-surface p-5">
+      <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-brand-tint text-brand">
+        <Icon className="size-5" />
+      </span>
+      <div className="flex flex-col gap-1">
+        <h2 className="font-extrabold">{title}</h2>
+        {children}
+      </div>
+    </section>
+  );
+}
 
 // Factual description of data handling for testers. Not a legal document.
 export default function DataPage() {
   const contact = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
-  const sections: [string, string][] = [
-    [fr.data.visibilityTitle, fr.data.visibility],
-    [fr.data.deletionTitle, fr.data.deletion],
-    [fr.data.hostingTitle, fr.data.hosting],
-  ];
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-5 px-4 py-10">
-      <h1 className="text-2xl font-semibold">{fr.data.title}</h1>
-      <p>{fr.data.intro}</p>
-      <section className="flex flex-col gap-2">
-        <h2 className="text-lg font-medium">{fr.data.collectedTitle}</h2>
-        <ul className="list-disc pl-5">
+    <Page>
+      <Link href="/" className="flex items-center gap-1 self-start py-2 font-bold text-muted hover:text-ink">
+        <ArrowLeft aria-hidden="true" className="size-5" />
+        {fr.errors.home}
+      </Link>
+      <PageTitle subtitle={fr.data.intro}>{fr.data.title}</PageTitle>
+      <Section Icon={UserRound} title={fr.data.collectedTitle}>
+        <ul className="list-disc pl-5 text-muted">
           {fr.data.collected.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
-      </section>
-      <section className="flex flex-col gap-2">
-        <h2 className="text-lg font-medium">{fr.data.notCollectedTitle}</h2>
-        <p>{fr.data.notCollected}</p>
-      </section>
-      {sections.map(([title, body]) => (
-        <section key={title} className="flex flex-col gap-2">
-          <h2 className="text-lg font-medium">{title}</h2>
-          <p>{body}</p>
-        </section>
-      ))}
+      </Section>
+      <Section Icon={Ban} title={fr.data.notCollectedTitle}>
+        <p className="text-muted">{fr.data.notCollected}</p>
+      </Section>
+      <Section Icon={Eye} title={fr.data.visibilityTitle}>
+        <p className="text-muted">{fr.data.visibility}</p>
+      </Section>
+      <Section Icon={Trash2} title={fr.data.deletionTitle}>
+        <p className="text-muted">{fr.data.deletion}</p>
+      </Section>
+      <Section Icon={Server} title={fr.data.hostingTitle}>
+        <p className="text-muted">{fr.data.hosting}</p>
+      </Section>
       {contact && (
-        <section className="flex flex-col gap-2">
-          <h2 className="text-lg font-medium">{fr.data.contactTitle}</h2>
-          <p>{fr.data.contact(contact)}</p>
-        </section>
+        <Section Icon={Mail} title={fr.data.contactTitle}>
+          <p className="text-muted">{fr.data.contact(contact)}</p>
+        </Section>
       )}
-      <Link href="/" className="font-medium underline">
-        {fr.errors.home}
-      </Link>
-    </main>
+    </Page>
   );
 }
