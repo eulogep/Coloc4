@@ -39,3 +39,28 @@ begin
 end $$;
 
 grant execute on all functions in schema tests to anon, authenticated;
+
+-- Fixtures written as postgres (bypassing RPCs) to set up arbitrary states.
+create function tests.create_household(p_name text) returns uuid
+language sql as $$
+  insert into public.households (name, timezone) values (p_name, 'Europe/Paris') returning id;
+$$;
+
+create function tests.add_member(
+  p_household_id uuid, p_user_id uuid, p_name text,
+  p_role public.member_role default 'member',
+  p_status public.member_status default 'active'
+) returns uuid
+language sql as $$
+  insert into public.household_members
+    (household_id, user_id, display_name_snapshot, role, status, left_at, anonymized_at)
+  values (
+    p_household_id,
+    case when p_status = 'anonymized' then null else p_user_id end,
+    p_name, p_role, p_status,
+    case when p_status = 'left' then now() end,
+    case when p_status = 'anonymized' then now() end)
+  returning id;
+$$;
+
+grant execute on all functions in schema tests to anon, authenticated;
