@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="fr">
+  <body style="font-family: Arial, Helvetica, sans-serif; color: #171717; line-height: 1.5;">
+    <h1 style="font-size: 20px;">Bienvenue sur Coloc4</h1>
+    <p>Pour activer ton compte, confirme ton adresse email :</p>
+    <p>
+      <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next={{ .RedirectTo }}"
+         style="display: inline-block; padding: 12px 20px; background: #171717; color: #ffffff; border-radius: 999px; text-decoration: none;">
+        Confirmer mon adresse
+      </a>
+    </p>
+    <p>Ce lien est valable une heure. Si tu n’as pas créé de compte, ignore simplement cet email.</p>
+  </body>
+</html>

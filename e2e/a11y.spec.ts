@@ -11,7 +11,7 @@ async function expectNoViolations(page: Page, label: string) {
 }
 
 test('public pages', async ({ page }) => {
-  for (const path of ['/', '/connexion', '/inscription', '/page-qui-n-existe-pas']) {
+  for (const path of ['/', '/connexion', '/inscription', '/mot-de-passe-oublie', '/donnees', '/page-qui-n-existe-pas']) {
     await page.goto(path)
     await expectNoViolations(page, path)
   }

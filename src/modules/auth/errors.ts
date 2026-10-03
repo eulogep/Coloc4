@@ -16,7 +16,10 @@ export function authErrorMessage(code: string | undefined): string {
     case 'email_not_confirmed':
       return fr.auth.errors.emailNotConfirmed
     case 'over_request_rate_limit':
+    case 'over_email_send_rate_limit':
       return fr.auth.errors.rateLimited
+    case 'same_password':
+      return fr.auth.errors.samePassword
     default:
       return fr.auth.errors.unknown
   }
