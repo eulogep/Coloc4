@@ -42,7 +42,7 @@ export const getHousehold = cache(async (householdId: string): Promise<Household
   const { supabase, userId } = await requireUser()
 
   const [household, members] = await Promise.all([
-    supabase.from('households').select('id, name, timezone').eq('id', householdId).maybeSingle(),
+    supabase.from('households').select('id, name, timezone').eq('id', householdId).is('archived_at', null).maybeSingle(),
     supabase
       .from('household_members')
       .select('id, user_id, display_name_snapshot, role, status, joined_at')

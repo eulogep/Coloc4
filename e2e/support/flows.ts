@@ -16,11 +16,12 @@ export async function chooseDisplayName(page: Page, name: string) {
   await page.getByRole('button', { name: 'Enregistrer' }).click()
 }
 
-export async function signUpWithProfile(page: Page, name: string) {
+export async function signUpWithProfile(page: Page, name: string): Promise<string> {
   await page.goto('/inscription')
-  await signUp(page)
+  const email = await signUp(page)
   await chooseDisplayName(page, name)
   await expect(page).toHaveURL(/\/accueil$/)
+  return email
 }
 
 const HOUSEHOLD_URL = /\/colocations\/[0-9a-f-]{36}\/depenses$/
@@ -61,13 +62,14 @@ export async function householdWithMembers(browser: Browser, ownerName: string, 
   const householdUrl = await createHousehold(owner, householdName)
   const link = await createInviteLink(owner)
   const others: Page[] = []
+  const emails: string[] = []
   for (const name of names) {
     const page = await browser.newPage()
-    await signUpWithProfile(page, name)
+    emails.push(await signUpWithProfile(page, name))
     await joinViaLink(page, link)
     others.push(page)
   }
-  return { owner, others, householdUrl }
+  return { owner, others, emails, householdUrl }
 }
 
 export async function addExpense(
