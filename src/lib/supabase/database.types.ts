@@ -5,7 +5,39 @@ export type Database = {
   
   "public": {
           Tables: {
-            "profiles": {
+            "household_members": {
+                  Row: {
+                    "anonymized_at": string | null,"created_at": string,"display_name_snapshot": string,"household_id": string,"id": string,"joined_at": string,"left_at": string | null,"role": Database["public"]['Enums']["member_role"],"status": Database["public"]['Enums']["member_status"],"updated_at": string,"user_id": string | null
+                  }
+                  Insert: {
+                    "anonymized_at"?: string | null,"created_at"?: string,"display_name_snapshot": string,"household_id": string,"id"?: string,"joined_at"?: string,"left_at"?: string | null,"role"?: Database["public"]['Enums']["member_role"],"status"?: Database["public"]['Enums']["member_status"],"updated_at"?: string,"user_id"?: string | null
+                  }
+                  Update: {
+                    "anonymized_at"?: string | null,"created_at"?: string,"display_name_snapshot"?: string,"household_id"?: string,"id"?: string,"joined_at"?: string,"left_at"?: string | null,"role"?: Database["public"]['Enums']["member_role"],"status"?: Database["public"]['Enums']["member_status"],"updated_at"?: string,"user_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "household_members_household_id_fkey"
+      columns: ["household_id"]
+isOneToOne: false
+      referencedRelation: "households"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"households": {
+                  Row: {
+                    "anonymized_member_seq": number,"archived_at": string | null,"created_at": string,"currency": string,"id": string,"name": string,"timezone": string,"updated_at": string
+                  }
+                  Insert: {
+                    "anonymized_member_seq"?: number,"archived_at"?: string | null,"created_at"?: string,"currency"?: string,"id"?: string,"name": string,"timezone": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "anonymized_member_seq"?: number,"archived_at"?: string | null,"created_at"?: string,"currency"?: string,"id"?: string,"name"?: string,"timezone"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"profiles": {
                   Row: {
                     "created_at": string,"display_name": string,"updated_at": string,"user_id": string
                   }
@@ -27,7 +59,7 @@ export type Database = {
             [_ in never]: never
           }
           Enums: {
-            [_ in never]: never
+            "member_role": "owner"|"member","member_status": "active"|"left"|"anonymized"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -143,7 +175,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            
+            "member_role": ["owner", "member"],"member_status": ["active", "left", "anonymized"]
           }
         }
 } as const
