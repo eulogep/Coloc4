@@ -18,6 +18,9 @@ export default async function SignUpPage({ searchParams }: PageProps<"/inscripti
           {fr.home.signIn}
         </Link>
       </p>
+      <Link href="/donnees" className="text-sm underline">
+        {fr.auth.dataLink}
+      </Link>
     </main>
   );
 }

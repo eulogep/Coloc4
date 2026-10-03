@@ -8,10 +8,20 @@ import { joinWithInvitation, previewInvitation, type PreviewOutcome } from './ac
 
 const STORAGE_KEY = 'coloc4.invitation'
 const JOIN_PATH = '/rejoindre'
+const TOKEN_TTL_MS = 24 * 60 * 60 * 1000
 
+// localStorage (not sessionStorage): the email-confirmation link opens a new tab,
+// which must still find the invitation. Cleared on use and after 24 hours.
 function readStoredToken(): string | null {
   try {
-    return sessionStorage.getItem(STORAGE_KEY)
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    const { token, savedAt } = JSON.parse(raw) as { token?: unknown; savedAt?: unknown }
+    if (typeof token !== 'string' || typeof savedAt !== 'number' || Date.now() - savedAt > TOKEN_TTL_MS) {
+      localStorage.removeItem(STORAGE_KEY)
+      return null
+    }
+    return token
   } catch {
     return null
   }
@@ -19,8 +29,8 @@ function readStoredToken(): string | null {
 
 function storeToken(token: string | null) {
   try {
-    if (token) sessionStorage.setItem(STORAGE_KEY, token)
-    else sessionStorage.removeItem(STORAGE_KEY)
+    if (token) localStorage.setItem(STORAGE_KEY, JSON.stringify({ token, savedAt: Date.now() }))
+    else localStorage.removeItem(STORAGE_KEY)
   } catch {
     // Storage unavailable (private mode): the flow still works within this page.
   }
@@ -48,7 +58,7 @@ function takeToken(): string | null {
 
 const subscribeNoop = () => () => {}
 
-// The flow depends on browser-only state (fragment, sessionStorage): render it on the client only.
+// The flow depends on browser-only state (fragment, localStorage): render it on the client only.
 export function JoinFlow() {
   const isClient = useSyncExternalStore(subscribeNoop, () => true, () => false)
   if (!isClient) return <p role="status">{fr.join.checking}</p>

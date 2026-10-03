@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="fr">
+  <body style="font-family: Arial, Helvetica, sans-serif; color: #171717; line-height: 1.5;">
+    <h1 style="font-size: 20px;">Nouveau mot de passe</h1>
+    <p>Tu as demandé à changer ton mot de passe Coloc4 :</p>
+    <p>
+      <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/nouveau-mot-de-passe"
+         style="display: inline-block; padding: 12px 20px; background: #171717; color: #ffffff; border-radius: 999px; text-decoration: none;">
+        Choisir un nouveau mot de passe
+      </a>
+    </p>
+    <p>Ce lien est valable une heure. Si tu n’es pas à l’origine de cette demande, ignore cet email : ton mot de passe ne change pas.</p>
+  </body>
+</html>

@@ -42,6 +42,9 @@ export default async function AccountPage() {
         <Link href="/profil" className={linkClass}>
           {fr.account.editName}
         </Link>
+        <Link href="/donnees" className={linkClass}>
+          {fr.auth.dataLink}
+        </Link>
         <form action={signOut}>
           <button type="submit" className={`${linkClass} w-full`}>
             {fr.auth.signOut}
