@@ -5,7 +5,32 @@ export type Database = {
   
   "public": {
           Tables: {
-            "household_members": {
+            "activity_logs": {
+                  Row: {
+                    "action": string,"actor_member_id": string | null,"created_at": string,"entity_id": string | null,"entity_type": string,"household_id": string,"id": number,"summary": NonNullable<Json>
+                  }
+                  Insert: {
+                    "action": string,"actor_member_id"?: string | null,"created_at"?: string,"entity_id"?: string | null,"entity_type": string,"household_id": string,"id"?: never,"summary"?: NonNullable<Json>
+                  }
+                  Update: {
+                    "action"?: string,"actor_member_id"?: string | null,"created_at"?: string,"entity_id"?: string | null,"entity_type"?: string,"household_id"?: string,"id"?: never,"summary"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "activity_logs_household_id_actor_member_id_fkey"
+      columns: ["household_id","actor_member_id"]
+isOneToOne: false
+      referencedRelation: "household_members"
+      referencedColumns: ["household_id","id"]
+    },{
+      foreignKeyName: "activity_logs_household_id_fkey"
+      columns: ["household_id"]
+isOneToOne: false
+      referencedRelation: "households"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"household_members": {
                   Row: {
                     "anonymized_at": string | null,"created_at": string,"display_name_snapshot": string,"household_id": string,"id": string,"joined_at": string,"left_at": string | null,"role": Database["public"]['Enums']["member_role"],"status": Database["public"]['Enums']["member_status"],"updated_at": string,"user_id": string | null
                   }
@@ -56,7 +81,9 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            [_ in never]: never
+            "create_household":
+{ Args: { "p_name": string,"p_timezone": string }; Returns: string
+                           }
           }
           Enums: {
             "member_role": "owner"|"member","member_status": "active"|"left"|"anonymized"
