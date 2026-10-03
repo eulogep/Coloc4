@@ -1,7 +1,7 @@
 import { fc, test } from '@fast-check/vitest'
 import { describe, expect, it } from 'vitest'
 import { amountArb } from './arbitraries'
-import { formatEur, minorFromWire, minorToWire, parseEurAmount, toInputString } from './money'
+import { formatEur, minorFromWire, minorToWire, parseEurAmount, parseEurShare, toInputString } from './money'
 
 describe('parseEurAmount', () => {
   it.each([
@@ -38,6 +38,20 @@ describe('parseEurAmount', () => {
     ['99999999999999999999', 'TOO_LARGE'],
   ])('rejects %j with %s', (input, error) => {
     expect(parseEurAmount(input)).toEqual({ ok: false, error })
+  })
+})
+
+describe('parseEurShare', () => {
+  it('accepts zero and empty as 0', () => {
+    expect(parseEurShare('')).toEqual({ ok: true, value: 0n })
+    expect(parseEurShare('0')).toEqual({ ok: true, value: 0n })
+    expect(parseEurShare('0,00')).toEqual({ ok: true, value: 0n })
+    expect(parseEurShare('12,5')).toEqual({ ok: true, value: 1250n })
+  })
+
+  it('still rejects malformed input', () => {
+    expect(parseEurShare('-1')).toEqual({ ok: false, error: 'NOT_A_NUMBER' })
+    expect(parseEurShare('1,234')).toEqual({ ok: false, error: 'TOO_MANY_DECIMALS' })
   })
 })
 
