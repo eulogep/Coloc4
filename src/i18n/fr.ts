@@ -47,4 +47,27 @@ export const fr = {
   app: {
     greeting: (name: string) => `Bonjour ${name} !`,
   },
+  households: {
+    listTitle: 'Tes colocations',
+    emptyTitle: 'Tu ne fais encore partie d’aucune colocation.',
+    emptyHint: 'Crée la tienne, ou ouvre le lien d’invitation envoyé par un colocataire.',
+    create: 'Créer une colocation',
+    createTitle: 'Nouvelle colocation',
+    name: 'Nom de la colocation',
+    nameHint: 'Par exemple : « Coloc des Lilas ».',
+    submit: 'Créer',
+    pending: 'Création…',
+    members: 'Colocataires',
+    you: 'toi',
+    owner: 'responsable',
+    formerMember: 'ancien colocataire',
+    notFoundTitle: 'Colocation introuvable',
+    notFoundBody: 'Ce lien ne correspond à aucune colocation dont tu fais partie.',
+    backToList: 'Retour à mes colocations',
+    errors: {
+      invalidName: 'Indique un nom de 1 à 60 caractères.',
+      profileRequired: 'Choisis d’abord ton prénom ou surnom.',
+      unknown: 'Impossible de créer la colocation. Réessaie.',
+    },
+  },
 } as const
