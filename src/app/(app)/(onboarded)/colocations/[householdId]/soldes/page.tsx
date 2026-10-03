@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { fr } from "@/i18n/fr";
 import { getHouseholdBalances } from "@/modules/expenses/balances-query";
@@ -6,6 +7,7 @@ import { formatEur } from "@/modules/expenses/domain/money";
 import { recommendSettlements } from "@/modules/expenses/domain/settlements";
 import { formatDay } from "@/modules/expenses/dates";
 import { getHousehold } from "@/modules/households/queries";
+import { SettlementHistory } from "@/modules/settlements/settlement-history";
 
 function signed(amount: bigint): string {
   return amount > 0n ? `+${formatEur(amount)}` : formatEur(amount);
@@ -42,6 +44,12 @@ export default async function BalancesPage({ params }: PageProps<"/colocations/[
   const lines = explainBalance(me, ledger.expenses, ledger.settlements);
   const expenseById = new Map(ledger.expenses.map((e) => [e.id, e]));
   const settlementById = new Map(ledger.settlements.map((s) => [s.id, s]));
+  const settleHref = `/colocations/${household.id}/soldes/rembourser`;
+  const history = ledger.settlements.slice(0, 20).map((s) => ({
+    id: s.id,
+    text: fr.settlements.historyLine(name(s.from), name(s.to), formatEur(s.amountMinor)),
+    date: formatDay(s.settledOn),
+  }));
 
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-6 px-4 py-6">
@@ -114,18 +122,46 @@ export default async function BalancesPage({ params }: PageProps<"/colocations/[
           <p>{fr.balances.noRecommendation}</p>
         ) : (
           <ul className="flex flex-col gap-2">
-            {recommendations.map((r) => (
-              <li key={`${r.fromMemberId}-${r.toMemberId}`} className="rounded-lg border border-zinc-300 px-4 py-3">
-                {r.fromMemberId === me
-                  ? fr.balances.youPay(formatEur(r.amountMinor), name(r.toMemberId))
-                  : r.toMemberId === me
-                    ? fr.balances.paysYou(name(r.fromMemberId), formatEur(r.amountMinor))
-                    : fr.balances.pays(name(r.fromMemberId), formatEur(r.amountMinor), name(r.toMemberId))}
-              </li>
-            ))}
+            {recommendations.map((r) => {
+              const involvesMe = r.fromMemberId === me || r.toMemberId === me;
+              const prefill = new URLSearchParams({
+                avec: r.fromMemberId === me ? r.toMemberId : r.fromMemberId,
+                sens: r.fromMemberId === me ? "envoye" : "recu",
+                montant: r.amountMinor.toString(),
+              });
+              return (
+                <li
+                  key={`${r.fromMemberId}-${r.toMemberId}`}
+                  className="flex flex-col gap-2 rounded-lg border border-zinc-300 px-4 py-3"
+                >
+                  <span>
+                    {r.fromMemberId === me
+                      ? fr.balances.youPay(formatEur(r.amountMinor), name(r.toMemberId))
+                      : r.toMemberId === me
+                        ? fr.balances.paysYou(name(r.fromMemberId), formatEur(r.amountMinor))
+                        : fr.balances.pays(name(r.fromMemberId), formatEur(r.amountMinor), name(r.toMemberId))}
+                  </span>
+                  {involvesMe && (
+                    <Link
+                      href={`${settleHref}?${prefill}`}
+                      className="flex min-h-11 items-center justify-center rounded-full bg-foreground px-4 text-sm font-medium text-background focus-visible:outline-2 focus-visible:outline-offset-2"
+                    >
+                      {fr.settlements.recordThis}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>
+
+      <Link
+        href={settleHref}
+        className="flex min-h-12 items-center justify-center rounded-full border border-zinc-400 px-6 font-medium focus-visible:outline-2 focus-visible:outline-offset-2"
+      >
+        {fr.settlements.record}
+      </Link>
 
       <section aria-labelledby="everyone" className="flex flex-col gap-2">
         <h2 id="everyone" className="text-lg font-medium">
@@ -147,6 +183,13 @@ export default async function BalancesPage({ params }: PageProps<"/colocations/[
               </li>
             ))}
         </ul>
+      </section>
+
+      <section aria-labelledby="history" className="flex flex-col gap-2">
+        <h2 id="history" className="text-lg font-medium">
+          {fr.settlements.historyTitle}
+        </h2>
+        <SettlementHistory householdId={household.id} lines={history} />
       </section>
     </main>
   );
